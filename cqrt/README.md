@@ -3,9 +3,7 @@ This file can be added to any Node.js project. When called it will store all the
 
 ## Example
 ```javascript
-var _cqrt = require('PATH');
-cqrt = new _cqrt();
+var cqrtLib = require('PATH');
+cqrt = new cqrtLib();
 cqrt.sqrt(num);
 ```
-
-###### Idea from fastSqares.js
