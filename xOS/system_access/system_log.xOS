@@ -1,0 +1,210 @@
+
+COMMAND read
+COMMAND read
+COMMAND read
+COMMAND print system_files/system_log.xOS
+COMMAND write
+COMMAND print system_files/system_log.xOS
+COMMAND read
+COMMAND create test
+COMMAND print test
+COMMAND list
+ERROR list
+COMMAND dir
+ERROR dir
+COMMAND list
+COMMAND list system_files
+COMMAND list
+COMMAND list
+COMMAND list system_files
+COMMAND list
+COMMAND dir system_files
+ERROR dir system_files
+COMMAND list system_files
+COMMAND list
+COMMAND lisdt
+ERROR lisdt
+COMMAND list
+COMMAND list system_files
+COMMAND list
+COMMAND list dsfdsf
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND echo
+ERROR echo
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND list system_files
+COMMAND list
+COMMAND list system_files
+COMMAND list system_files
+COMMAND list system_files
+COMMAND restart
+COMMAND list
+COMMAND list system_files
+COMMAND restart
+COMMAND restart
+COMMAND clear
+COMMAND clear
+COMMAND read
+COMMAND write
+COMMAND read
+COMMAND clear
+COMMAND list system_filess
+COMMAND list system_files
+COMMAND list system_files
+COMMAND list program_files
+COMMAND print test
+COMMAND create file_to
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND list
+COMMAND help
+COMMAND help
+COMMAND run sdfdsf
+ERROR sdfdsf
+COMMAND run viewer
+ERROR viewer
+COMMAND run viewer
+COMMAND restart
+COMMAND run viewer
+COMMAND viewer
+ERROR viewer
+COMMAND run viewer
+COMMAND read
+COMMAND run viewer
+COMMAND restart
+COMMAND ewdfdsfdfsg
+ERROR ewdfdsfdfsg
+COMMAND clear
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer plus
+COMMAND run viewer
+COMMAND restart
+COMMAND run viewer
+COMMAND restart
+COMMAND run viewer
+COMMAND run test
+COMMAND restart
+COMMAND run viewer
+COMMAND run dsfsdf
+ERROR dsfsdf
+COMMAND restart
+COMMAND run sdfsd
+COMMAND run sdjhajsdh
+COMMAND weujhewr
+ERROR weujhewr
+COMMAND run viewer
+COMMAND write test
+COMMAND read
+COMMAND clear
+COMMAND print system_files/system_logs.xOS
+COMMAND print system_files/system_log.xOS
+COMMAND run viewer
+COMMAND run viewer
+COMMAND restart
+COMMAND run viewer
+COMMAND create test
+COMMAND list
+COMMAND print test
+COMMAND run viewer
+COMMAND run viewer
+COMMAND clear
+COMMAND run viewer
+COMMAND write test
+COMMAND readf
+ERROR readf
+COMMAND read
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND create test
+COMMAND run viewer
+COMMAND run viewer
+COMMAND create test
+COMMAND run viewer
+COMMAND create test.txt
+COMMAND list
+COMMAND run viewer
+COMMAND run viewer
+COMMAND RUN 
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND run viewer
+COMMAND skjda
+ERROR skjda
+COMMAND list
+COMMAND list program_data
+COMMAND create test.xOS
+COMMAND list
+COMMAND run viewer
+COMMAND list
+COMMAND create test.xOS
+COMMAND print test.xOS
+COMMAND remove test.xOS
+COMMAND run viewer
+COMMAND write
+COMMAND help
+COMMAND run viewer
+COMMAND list
+COMMAND list system_access
+COMMAND run viewer
+COMMAND write 
+COMMAND read
+COMMAND dir
+ERROR dir
+COMMAND list
+COMMAND list
+COMMAND list system_access
+COMMAND clear
+COMMAND run viewer
+COMMAND print system_access/system_log.xOS
+COMMAND create test
+COMMAND print test
+COMMAND list
+COMMAND remove test
+COMMAND remove test
+COMMAND list
+COMMAND complete
+ERROR complete
+COMMAND run viewer
+COMMAND restart
+COMMAND restart
+COMMAND show test
+COMMAND show command 2
+COMMAND show this is another command
+COMMAND list system_files
+COMMAND run viewer
+COMMAND list system_access
+COMMAND print system_access/startup.xOS
+COMMAND create system_access/startup.xOS
+COMMAND print system_access/startup.xOS
+COMMAND print system_access/startup.xOS
+COMMAND create system_access/startup.xOS
+COMMAND help
+COMMAND run viewer
+COMMAND create program_files/loud.bat
+COMMAND run loud
+COMMAND run loud
+COMMAND run loud
+COMMAND run loud
+COMMAND run loud
+COMMAND run loud
+COMMAND run loud
+COMMAND write hello
+COMMAND read
+COMMAND help
