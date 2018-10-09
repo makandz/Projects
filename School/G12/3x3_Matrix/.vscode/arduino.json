@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "3x3_Matrix.ino",
+    "port": "COM5"
+}
