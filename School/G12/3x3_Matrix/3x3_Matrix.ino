@@ -1,10 +1,16 @@
+#include <FrequencyTimer2.h>
+
 // Pin Numbers
-int anodes[] = {3, 4, 2};
+int anodes[] = {4, 5, 3};
 int cathodes[] = {10, 8, 9};
-int button = 13;
+int button = 2;
+
+// Frame counting
+int frame = 0;
 
 // Button
 int prevButton = 0;
+int buttonTime = 0;
 
 // Animation
 int animation = 0; // Current animation (0: Moving bar)
@@ -89,6 +95,9 @@ int swiping_animation[5][3][3] = {
 void setup() {
     Serial.begin(9600); // debugging
 
+    // Int for button
+    attachInterrupt(0, onButton, FALLING);
+
     // Set all pins to output state.
     for (int i = 0; i < 3; i++) {
         pinMode(anodes[i], OUTPUT);
@@ -97,6 +106,13 @@ void setup() {
 
     // Button pin
     pinMode(button, INPUT);
+
+    // Turn off toggling of pin 11
+    FrequencyTimer2::disable();
+    // Set refresh rate (interrupt timeout period)
+    FrequencyTimer2::setPeriod(32000);
+    // Set interrupt routine to be called
+    FrequencyTimer2::setOnOverflow(render);
 }
 
 void offGrid() {
@@ -107,6 +123,12 @@ void offGrid() {
 }
 
 void render() {
+    frame++;
+    if (frame >= 3000) {
+        animate();
+        frame = 0;
+    }
+
     // Loop through grid, state of LEDs.
     for (int i = 0; i < 3; i++) {
         digitalWrite(anodes[i], HIGH); // Turn on row
@@ -190,28 +212,19 @@ void animate() {
 }
 
 void loop() {
-    // Clock ticking..
-    int curTime = millis();
-    if (curTime - prevTime > 750) {
-        changed = true;
-        prevTime = curTime;
-    }
-
-    // Listen for the button
-    int buttonState = digitalRead(button); // Current state.
-    if (prevButton != buttonState) { // Not holding.
-        prevButton = buttonState; // It's now the previous state.
-        if (buttonState) { // Is it clicked?
-            // We've got 3 animations.
-            if (animation == 4)
-                animation = 0;
-            else animation++;
-            offGrid(); // Reset grid
-            curTick = 0; // Reset current timer.
-        }
-    }
-
-    if (changed) animate(); // Animations
     render(); // Grid Rendering
-    changed = false; // reset
+}
+
+void onButton() {
+    buttonTime = millis();
+
+    // We've got 3 animations.
+    if (buttonTime - prevButton > 250) {
+        if (animation == 4)
+            animation = 0;
+        else animation++;
+        offGrid(); // Reset grid
+        curTick = 0; // Reset current timer.
+        prevButton = buttonTime; // Set button time
+    }
 }
