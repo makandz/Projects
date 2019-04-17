@@ -158,6 +158,10 @@ class Bullet():
         ellipse(self.x, self.y, 5, 5)
         self.moveVelocity()
 
+    def moveVelocity(self):        
+        self.x += self.velocity[0]
+        self.y -= self.velocity[1]
+
 tick = 0
 stars = []
 asteroids = []
@@ -187,13 +191,11 @@ def setup():
 
 def keyPressed():
     global controls, key
-    key = key.lower()
     if key in controls:
         controls[key] = True
 
 def keyReleased():
     global controls, key
-    key = key.lower()
     if key in controls:
         controls[key] = False
 
@@ -202,11 +204,11 @@ def render():
     for star in stars:
         star.render()
 
-    # Ship Render
-    ship.render()
-
     for shot in shoots:
         shot.render()
+
+    # Ship Render
+    ship.render()
 
     for asteroid in asteroids:
         asteroid.render()
@@ -238,8 +240,13 @@ def boostForward():
     vectors = calculateVectors(ship.angle, 3)
     ship.boost(vectors[0], vectors[1])
 
+def shoot():
+    global shoots
+    vectors = calculateVectors(ship.angle, 10)
+    shoots.append(Bullet(ship.x, ship.y, ship.angle, vectors))
+
 def controlManager():
-    global controls
+    global controls, cooldown
 
     if controls['m']:
         if cooldown < 0:
@@ -247,7 +254,7 @@ def controlManager():
             shoot()
     if controls['a']:
         if ship.angle - 5 < 0:
-            ship.angle = 360 + (ship.angle )
+            ship.angle = 360 + (ship.angle)
         ship.angle -= 5
     if controls['d']:
         if ship.angle + 5 > 360:
