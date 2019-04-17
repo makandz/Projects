@@ -1,3 +1,10 @@
+# ShockBlast - An ICS3U Summative
+# Took me a few weeks to get this done!
+# It's a top down shooter where you need to fight against a horde of zombies.
+# Waves, weapon selection, sound effects, and more!
+# Made by Makan D
+# ---------------------------------------------------------------------------
+
 # Audio library
 add_library('minim')
 minim = 0
