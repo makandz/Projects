@@ -44,7 +44,12 @@ class Asteroid():
 
     def render(self):
         """rendering of the asteroids"""
-        fill(255, 110) # white, transparent-ish
+        if self.life == 3:
+            fill(255, 70) # white, transparent-ish
+        elif self.life == 2:
+            fill(255, 90) # white, transparent-ish
+        else:
+            fill(255, 130) # white, transparent-ish
         stroke(255)
         strokeWeight(3) # outline
         ellipse(self.x, self.y, self.size, self.size) # CIRCLE! (diameter)
@@ -69,7 +74,7 @@ class Asteroid():
 class Ship():
     def __init__(self, x, y, velocity = [0, 0]):
         """initialize a new ship"""
-        self.life = 5
+        self.life = 3
         self.x = x
         self.y = y
         self.velocity = velocity
@@ -170,7 +175,7 @@ class Ship():
 class Bullet():
     def __init__(self, x, y, angle = 0, velocity = [0, 0]):
         """initialize a new bullet"""
-        self.life = 200 # only 200 tick life
+        self.life = 100 # only 200 tick life
         self.x = x
         self.y = y
         self.velocity = velocity
@@ -186,6 +191,16 @@ class Bullet():
 
     def moveVelocity(self):
         """update the bullet coordinates"""
+        # Move off the screen
+        if self.x + 20 > 850:
+            self.x = -25
+        elif self.x + 20 < -50:
+            self.x = 825
+        if self.y + 20 > 850:
+            self.y = -25
+        elif self.y + 20 < -50:
+            self.y = 825
+
         self.x += self.velocity[0]
         self.y -= self.velocity[1]
         self.life -= 1 # reduce life
@@ -198,6 +213,8 @@ shoots = []
 ship = [] # only one, will rewrite
 cooldown = 0 # cooldown for shots
 state = 0 # 0 menu, 1 game, 2 death
+title_render = [0, True]
+highest = 0
 
 # control manager
 controls = {
@@ -209,10 +226,13 @@ controls = {
 
 def setup():
     """setup of program"""
-    global ship
+    global ship, highest
 
     size(800, 800) # window size
     shapeMode(CENTER) # base on the center
+    score_file = open("score.txt")
+    highest = score_file.readline().rstrip("\n\r")
+    print(highest)
     for i in range(100): # 100 stars
         stars.append(Star(random(800), random(800), random(50)))
     ship = Ship(400, 400) # ship spawn
@@ -223,11 +243,13 @@ def setup():
     
 def keyPressed():
     """is a key pressed?"""
-    global controls, key, state, asteroids
+    global controls, key, state, asteroids, ship
     if state == 0: # state update
         state = 1
     elif state == 2: # state update
         asteroids = []
+        ship.score = 0
+        ship.life = 3
         ship = Ship(400, 400) # ship spawn
         for i in range(5): # restart asteroid spawns
             size = random(75, 100)
@@ -323,41 +345,52 @@ def collisionCheck():
     global shoots, asteroids
     remove_queue = [] # elements to remove
     asteroid_killed = None # anything killed the ship?
+    removed = 0
     for asteroid in range(len(asteroids)): # all asteroids
-        if dist(ship.x, ship.y, asteroids[asteroid].x, asteroids[asteroid].y) < 20 + (asteroids[asteroid].size / 2): # kill the ship?
+        if dist(ship.x, ship.y, asteroids[asteroid - removed].x, asteroids[asteroid - removed].y) < 20 + (asteroids[asteroid - removed].size / 2): # kill the ship?
             shipKilled() # ship was killed!
-            asteroid_killed = asteroid # which one did it?
+            if asteroids[asteroid - removed].life > 1: # is the asteroid dead?
+                for _ in range(2): # nope, add two more
+                    asteroids.append(
+                        Asteroid(
+                            asteroids[asteroid - removed].x,
+                            asteroids[asteroid - removed].y,
+                            asteroids[asteroid - removed].size / 1.2,
+                            [random(-2, 2), random(-2, 2)],
+                            asteroids[asteroid - removed].life - 1
+                        )
+                    )
+            asteroids.remove(asteroids[asteroid - removed])
+            removed += 1
             break # no more looping needed
         for shot in range(len(shoots)): # any shots hit an asteroid?
-            if dist(shoots[shot].x, shoots[shot].y, asteroids[asteroid].x, asteroids[asteroid].y) < 5 + (asteroids[asteroid].size / 2):
+            if dist(shoots[shot - removed].x, shoots[shot - removed].y, asteroids[asteroid - removed].x, asteroids[asteroid - removed].y) < 5 + (asteroids[asteroid - removed].size / 2):
                 ship.score += 1 # yep, winner!
-                if not (shot, asteroid) in remove_queue: # add to the queue if not already
-                    remove_queue.append((shot, asteroid)) # added
-                if asteroids[asteroid].life > 1: # is the asteroid dead?
+                if asteroids[asteroid - removed].life > 1: # is the asteroid dead?
                     for _ in range(2): # nope, add two more
                         asteroids.append(
                             Asteroid(
-                                asteroids[asteroid].x,
-                                asteroids[asteroid].y,
-                                asteroids[asteroid].size / 1.2,
+                                asteroids[asteroid - removed].x,
+                                asteroids[asteroid - removed].y,
+                                asteroids[asteroid - removed].size / 1.2,
                                 [random(-2, 2), random(-2, 2)],
-                                asteroids[asteroid].life - 1
+                                asteroids[asteroid - removed].life - 1
                             )
                         )
-    if asteroid_killed != None: # was the ship killed?
-        asteroids.pop(asteroid_killed) # remove it only
-    else: # nope
-        removal_index = 0
-        for i in remove_queue: # remove all of them
-            shoots.pop(i[0] - removal_index)
-            asteroids.pop(i[1] - removal_index)
-            removal_index += 1
+                shoots.remove(shoots[shot - removed])
+                asteroids.remove(asteroids[asteroid - removed])
+                removed += 1
 
 def shipKilled():
     """ship has been DESTROYED"""
-    global state
+    global state, highest
     ship.life -= 1
     if ship.life < 1:
+        if int(highest) < ship.score:
+            score_file = open("score.txt", "w")
+            score_file.write(str(ship.score))
+            score_file.close()
+            highest = str(ship.score)
         state = 2
     ship.x = 400 # middle of screen again
     ship.y = 400
@@ -368,7 +401,7 @@ def controlManager():
     global controls, cooldown
 
     if controls['m'] and cooldown < 0: # shooting (must pass the cooldown)
-        cooldown = 10
+        cooldown = 15
         shoot() # shoot a BOMB
     if controls['a']: # left
         if ship.angle - 5 < 0:
@@ -389,7 +422,7 @@ def game():
     global cooldown
     collisionCheck() # check for collisions
     cooldown -= 1 # reduce cooldown
-    if tick % 500 == 0: # add a new asteroid every 500 ticks
+    if tick % 300 == 0 or len(asteroids) <= 1: # add a new asteroid every 500 ticks
         size = random(75, 100)
         safe = safeSpawn(size)
         asteroids.append(Asteroid(safe[0], safe[1], size, [random(-2, 2), random(-2, 2)]))
@@ -403,6 +436,7 @@ def game():
 
 def renderTitle():
     """render the title screen"""
+    global title_render, highest
     background(0)
 
     # misc render
@@ -412,10 +446,21 @@ def renderTitle():
     for asteroid in asteroids:
         asteroid.render()
 
-    textSize(80)
+    if title_render[1]:
+        title_render[0] += 0.1
+        if title_render[0] >= 5:
+            title_render[1] = False
+    else:
+        title_render[0] -= 0.1
+        if title_render[0] <= -5:
+            title_render[1] = True
+            
+    textSize(80 - title_render[0])
     color(255)
     fill(255, 255)
     text("Asteroids", width / 2 - (textWidth("Asteroids") / 2), 200)
+    textSize(50)
+    text("Highest: " + str(highest), width / 2 - (textWidth("Highest: " + str(highest)) / 2), 300)
     textSize(30)
     color(200)
     text("Press any key to start", width / 2 - (textWidth("Press any key to start") / 2), 700)
@@ -428,6 +473,8 @@ def renderDead():
     color(255)
     fill(255, 255)
     text("You've lost!", width / 2 - (textWidth("You've lost!") / 2), 200)
+    textSize(60)
+    text("Score: " + str(ship.score), width / 2 - (textWidth("Score: " + str(ship.score)) / 2), 350)
     textSize(30)
     color(200)
     text("Press any key to continue", width / 2 - (textWidth("Press any key to continue") / 2), 700)
