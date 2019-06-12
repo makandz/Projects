@@ -401,7 +401,7 @@ def controlManager():
     global controls, cooldown
 
     if controls['m'] and cooldown < 0: # shooting (must pass the cooldown)
-        cooldown = 15
+        cooldown = 1
         shoot() # shoot a BOMB
     if controls['a']: # left
         if ship.angle - 5 < 0:
