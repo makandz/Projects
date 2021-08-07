@@ -6,6 +6,7 @@ been doing in order.
 These are a few I didn't get the fastest times on, might redo later.
 - (3) Longest Substring Without Repeating Characters
 - (1) Two Sum
+- (5) Longest Palindromic Substring
 
 ## To study
 These questions had specific algorithms I probably had to Google for, good to review.
