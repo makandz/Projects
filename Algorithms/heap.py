@@ -117,6 +117,7 @@ if __name__ == "__main__":
 
     heap = Heap()
     heap.Create([2, 5, 1, 23, 10, 92, 10, 100, 219, 100])
+    print(heap)
     print(heap.ExtractMax())
     print(heap.ExtractMax())
     print(heap.ExtractMax())
